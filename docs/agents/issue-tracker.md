@@ -1,7 +1,7 @@
 # Issue tracker: GitHub
 
 Specs and implementation tasks for this repository live in GitHub Issues at
-`laurellang/machine-learning-hw1`. Use the `gh` CLI from the repository root.
+`laurellang/Linear_regression`. Use the `gh` CLI from the repository root.
 
 ## Conventions
 

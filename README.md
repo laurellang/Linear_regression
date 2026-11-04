@@ -1,14 +1,14 @@
-# 机器学习 HW1：核物理数据回归
+# Linear_regression：核物理数据回归
 
 | 角色 | 主要修改位置 | 负责范围 | 给 AI 的起始说明 |
 | --- | --- | --- | --- |
-| 0 号（仓库维护） | `README.md`、`AGENTS.md`、`docs/architecture.md`、`pyproject.toml`、`src/hw1/experiment.py`、`src/hw1/reporting.py`、公共接口测试、`experiments/final/` | 维护目录与接口约定、共享评估和结果工具、依赖与运行说明，最后整合比较图、最终测试和报告 | [0 号提示词](#0-号仓库维护) |
-| 1 号（数据统计与预处理） | `src/hw1/data.py`、`experiments/data/`、`docs/analysis/data.md`、对应的数据测试 | 数据概况与统计、缺失和异常检查、列解析、必要预处理与固定训练/验证划分；说明数据处理的理由 | [1 号提示词](#1-号数据统计与预处理) |
-| 2 号（线性路线） | `experiments/linear/`、`docs/analysis/linear.md` | 一种线性或正则化回归算法，默认与优化方案、验证结果、预测图和分析 | [2 号提示词](#2-号线性路线) |
-| 3 号（树模型路线） | `experiments/tree/`、`docs/analysis/tree.md` | 一种树或集成回归算法，默认与优化方案、验证结果、预测图和分析 | [3 号提示词](#3-号树模型路线) |
-| 4 号（拓展路线） | `experiments/robustness/`、`docs/analysis/robustness.md` | 训练样本量和输入噪声实验，比较两种已完成模型的泛化与鲁棒性 | [4 号提示词](#4-号拓展路线) |
+| 0 号（仓库维护） | `README.md`、`AGENTS.md`、`docs/architecture.md`、`pyproject.toml`、`src/linear_regression/experiment.py`、`src/linear_regression/reporting.py`、`src/tests/` 中对应测试、`src/linear_regression/experiments/final/` | 维护目录与接口约定、共享评估和结果工具、依赖与运行说明，最后整合比较图、最终测试和报告 | [0 号提示词](#0-号仓库维护) |
+| 1 号（数据统计与预处理） | `src/linear_regression/data.py`、`src/linear_regression/experiments/data/`、`src/tests/` 中对应测试、`docs/analysis/data.md` | 数据概况与统计、缺失和异常检查、列解析、必要预处理与固定训练/验证划分；说明数据处理的理由 | [1 号提示词](#1-号数据统计与预处理) |
+| 2 号（线性路线） | `src/linear_regression/experiments/linear/`、`docs/analysis/linear.md` | 一种线性或正则化回归算法，默认与优化方案、验证结果、预测图和分析 | [2 号提示词](#2-号线性路线) |
+| 3 号（树模型路线） | `src/linear_regression/experiments/tree/`、`docs/analysis/tree.md` | 一种树或集成回归算法，默认与优化方案、验证结果、预测图和分析 | [3 号提示词](#3-号树模型路线) |
+| 4 号（拓展路线） | `src/linear_regression/experiments/robustness/`、`docs/analysis/robustness.md` | 训练样本量和输入噪声实验，比较两种已完成模型的泛化与鲁棒性 | [4 号提示词](#4-号拓展路线) |
 
-0 号和 1 号由同一位同学承担，因此团队仍为四人。表中的代码目录是计划中的归属位置，按任务实施时创建。公共代码如需调整，任何成员都可以直接修改 `main`，但必须保持 [接口约定](docs/architecture.md) 一致，并先在本地运行相关测试。目前仓库只有设计与原始数据，尚无可运行的实验命令。
+0 号和 1 号由同一位同学承担，因此团队仍为四人。表中的目录已建立，具体实现文件按任务创建；所有 Python 源码和测试都位于 `src/`。公共代码如需调整，任何成员都可以直接修改 `main`，但必须保持 [接口约定](docs/architecture.md) 一致，并先在本地运行相关测试。目前仓库只有设计与原始数据，尚无可运行的实验命令。
 
 ## 先读什么
 
@@ -41,7 +41,7 @@
 ### 0 号仓库维护
 
 ```text
-请先阅读 README.md、AGENTS.md、docs/architecture.md、docs/agents/issue-tracker.md 和作业要求。我是 0 号同学，负责仓库维护；我也承担 1 号的数据工作，但本次会话按 0 号范围协作。可修改 README.md、AGENTS.md、docs/architecture.md、pyproject.toml、src/hw1/experiment.py、src/hw1/reporting.py、experiments/final/ 和对应的公共接口测试。
+请先阅读 README.md、AGENTS.md、docs/architecture.md、docs/agents/issue-tracker.md 和作业要求。我是 0 号同学，负责仓库维护；我也承担 1 号的数据工作，但本次会话按 0 号范围协作。可修改 README.md、AGENTS.md、docs/architecture.md、pyproject.toml、src/linear_regression/experiment.py、src/linear_regression/reporting.py、src/linear_regression/experiments/final/ 和 src/tests/ 中对应的测试。
 本次任务要求：【由我填写】
 希望你怎样协助：【由我填写】
 完成标准：【由我填写】
@@ -50,7 +50,7 @@
 ### 1 号数据统计与预处理
 
 ```text
-请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求、dataset_UCI/ 下的数据文件，以及已有的 src/hw1/data.py 和 docs/analysis/data.md（若已创建）。我是 1 号同学，负责数据统计与预处理。可修改 src/hw1/data.py、experiments/data/、docs/analysis/data.md 和对应的数据测试。
+请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求、dataset_UCI/ 下的数据文件，以及已有的 src/linear_regression/data.py 和 docs/analysis/data.md（若已创建）。我是 1 号同学，负责数据统计与预处理。可修改 src/linear_regression/data.py、src/linear_regression/experiments/data/、docs/analysis/data.md 和 src/tests/ 中对应的数据测试。
 本次任务要求：【由我填写】
 希望你怎样协助：【由我填写】
 完成标准：【由我填写】
@@ -59,7 +59,7 @@
 ### 2 号线性路线
 
 ```text
-请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及已有的数据代码和分析文档。我是 2 号同学，负责线性路线。可修改 experiments/linear/ 和 docs/analysis/linear.md。
+请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及已有的数据代码和分析文档。我是 2 号同学，负责线性路线。可修改 src/linear_regression/experiments/linear/ 和 docs/analysis/linear.md。
 本次任务要求：【由我填写】
 希望你怎样协助：【由我填写】
 完成标准：【由我填写】
@@ -68,7 +68,7 @@
 ### 3 号树模型路线
 
 ```text
-请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及已有的数据代码和分析文档。我是 3 号同学，负责树模型路线。可修改 experiments/tree/ 和 docs/analysis/tree.md。
+请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及已有的数据代码和分析文档。我是 3 号同学，负责树模型路线。可修改 src/linear_regression/experiments/tree/ 和 docs/analysis/tree.md。
 本次任务要求：【由我填写】
 希望你怎样协助：【由我填写】
 完成标准：【由我填写】
@@ -77,7 +77,7 @@
 ### 4 号拓展路线
 
 ```text
-请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及 2、3 号同学已完成的模型文件与分析文档。我是 4 号同学，负责拓展路线。可修改 experiments/robustness/ 和 docs/analysis/robustness.md。
+请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及 2、3 号同学已完成的模型文件与分析文档。我是 4 号同学，负责拓展路线。可修改 src/linear_regression/experiments/robustness/ 和 docs/analysis/robustness.md。
 本次任务要求：【由我填写】
 希望你怎样协助：【由我填写】
 完成标准：【由我填写】
