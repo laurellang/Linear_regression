@@ -1,13 +1,14 @@
 # 机器学习 HW1：核物理数据回归
 
-| 成员 | 主要修改位置 | 交付内容 | 给 AI 的起始说明 |
+| 角色 | 主要修改位置 | 负责范围 | 给 AI 的起始说明 |
 | --- | --- | --- | --- |
-| 1 号（仓库负责人） | `src/hw1/`、`tests/`、`pyproject.toml`、`docs/architecture.md`；最后整合 `docs/analysis/` 与 `docs/figures/` | 公共数据、划分、评估、绘图和结果保存代码；接口测试；最终测试与报告整合。不实现正式回归模型 | [1 号提示词](#1-号仓库负责人) |
+| 0 号（仓库维护） | `README.md`、`AGENTS.md`、`docs/architecture.md`、`pyproject.toml`、`src/hw1/experiment.py`、`src/hw1/reporting.py`、公共接口测试、`experiments/final/` | 维护目录与接口约定、共享评估和结果工具、依赖与运行说明，最后整合比较图、最终测试和报告 | [0 号提示词](#0-号仓库维护) |
+| 1 号（数据统计与预处理） | `src/hw1/data.py`、`experiments/data/`、`docs/analysis/data.md`、对应的数据测试 | 数据概况与统计、缺失和异常检查、列解析、必要预处理与固定训练/验证划分；说明数据处理的理由 | [1 号提示词](#1-号数据统计与预处理) |
 | 2 号（线性路线） | `experiments/linear/`、`docs/analysis/linear.md` | 一种线性或正则化回归算法，默认与优化方案、验证结果、预测图和分析 | [2 号提示词](#2-号线性路线) |
 | 3 号（树模型路线） | `experiments/tree/`、`docs/analysis/tree.md` | 一种树或集成回归算法，默认与优化方案、验证结果、预测图和分析 | [3 号提示词](#3-号树模型路线) |
 | 4 号（拓展路线） | `experiments/robustness/`、`docs/analysis/robustness.md` | 训练样本量和输入噪声实验，比较两种已完成模型的泛化与鲁棒性 | [4 号提示词](#4-号拓展路线) |
 
-表中的代码目录是计划中的归属位置，按任务实施时创建。公共代码如需调整，任何成员都可以直接修改 `main`，但必须保持 [接口约定](docs/architecture.md) 一致，并先在本地运行相关测试。目前仓库只有设计与原始数据，尚无可运行的实验命令。
+0 号和 1 号由同一位同学承担，因此团队仍为四人。表中的代码目录是计划中的归属位置，按任务实施时创建。公共代码如需调整，任何成员都可以直接修改 `main`，但必须保持 [接口约定](docs/architecture.md) 一致，并先在本地运行相关测试。目前仓库只有设计与原始数据，尚无可运行的实验命令。
 
 ## 先读什么
 
@@ -22,41 +23,62 @@
 
 本项目只预测 `k-inf`。输入仅用后 39 列；`PPPF` 也是输出，不能作为输入。`ucimlrepo.fetch_ucirepo(id=1091)` 无法直接导入该数据集，因为 UCI 没提供标准化数据地址；使用仓库内下载的原始文件。
 
-所有模型用 `raw.csv` 的同一训练/验证划分：80%/20%，随机种子 42。预处理参数只从训练部分学习。模型负责人各自选择并说明调参依据；统一报告 MAE、RMSE、R²。`test.csv` 只在模型和参数确定后由 1 号统一运行最终评估，不参与调参、特征选择或鲁棒性试验。
+所有模型用 `raw.csv` 的同一训练/验证划分：80%/20%，随机种子 42。预处理参数只从训练部分学习。1 号负责公共的数据检查与划分；各模型特有的标准化等变换由模型负责人放入各自的 Pipeline。模型负责人各自选择并说明调参依据；统一报告 MAE、RMSE、R²。`test.csv` 只在模型和参数确定后由 0 号统一运行最终评估，不参与调参、特征选择或鲁棒性试验。
 
 ## 交付顺序与协作
 
-1. 1 号完成公共框架和接口测试，测试中可使用简易 `fit/predict` 替身，但不提交正式回归模型。
-2. 2、3 号在公共框架上并行完成各自算法、优化前后对比和文字分析。两条路线应体现不同建模思路。
+1. 0 号维护公共接口、依赖、评估与结果工具；1 号完成数据统计、预处理、列解析和固定划分。公共接口测试可用简易 `fit/predict` 替身，不把它当成正式回归模型。
+2. 2、3 号在公共代码可用后并行完成各自算法、优化前后对比和文字分析。两条路线应体现不同建模思路。
 3. 4 号在两种模型可复用后开展样本量与输入噪声分析，只使用训练/验证数据。
-4. 1 号整合模型性能比较图、精选结果、最终测试和报告。题目提到的报告模板尚未放入仓库。
+4. 0 号整合模型性能比较图、精选结果、最终测试和报告。题目提到的报告模板尚未放入仓库。
 
 用 GitHub Issues 认领和记录任务。团队约定直接向 `main` 提交，不使用 PR，也暂不设置推送时自动检查。每次提交前先拉取最新代码，运行相关本地测试或实验，在 Issue 中记录运行命令、结果与提交号。生成的中间文件放在 `outputs/`，最终采用的图放在 `docs/figures/`，实验解释放在 `docs/analysis/`。
 
 ## 给 AI 的任务说明
 
-以下提示词可直接作为各自会话的开头；后续以对应 GitHub Issue 的验收条件为准。
+先填写每段中的空白，再把提示词发给 AI。它只提供阅读范围与文件归属，具体任务由同学本人决定；对应 GitHub Issue 可作为补充背景。
 
-### 1 号仓库负责人
+### 0 号仓库维护
 
 ```text
-先阅读 README.md、AGENTS.md、GLOSSARY.md、docs/architecture.md 和 docs/ 中的作业要求。我是 1 号同学，负责公共代码框架，不负责实现正式回归算法。请按架构文档实现数据解析与校验、固定划分、统一训练评估、图表与结果保存、命令行运行约定和接口测试。用测试中的简易 fit/predict 替身验证公共流程，不把它当成作业模型。保持 test.csv 仅供最终评估。完成后给出实际安装、测试和运行命令，并更新 README.md 的项目状态。
+请先阅读 README.md、AGENTS.md、docs/architecture.md、docs/agents/issue-tracker.md 和作业要求。我是 0 号同学，负责仓库维护；我也承担 1 号的数据工作，但本次会话按 0 号范围协作。可修改 README.md、AGENTS.md、docs/architecture.md、pyproject.toml、src/hw1/experiment.py、src/hw1/reporting.py、experiments/final/ 和对应的公共接口测试。
+本次任务要求：【由我填写】
+希望你怎样协助：【由我填写】
+完成标准：【由我填写】
+```
+
+### 1 号数据统计与预处理
+
+```text
+请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求、dataset_UCI/ 下的数据文件，以及已有的 src/hw1/data.py 和 docs/analysis/data.md（若已创建）。我是 1 号同学，负责数据统计与预处理。可修改 src/hw1/data.py、experiments/data/、docs/analysis/data.md 和对应的数据测试。
+本次任务要求：【由我填写】
+希望你怎样协助：【由我填写】
+完成标准：【由我填写】
 ```
 
 ### 2 号线性路线
 
 ```text
-先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求和我认领的 GitHub Issue。我是 2 号同学，负责 experiments/linear/ 与 docs/analysis/linear.md。请在公共框架上实现一种线性或正则化回归算法，说明原理与关键参数，比较默认方案和优化方案；必要的标准化放入只在训练数据上拟合的 Pipeline。使用统一验证划分和 MAE、RMSE、R²，生成真实值与预测值对比图并解释结果。不要读取 test.csv。完成后运行相关检查，在 Issue 中记录命令、指标与提交号。
+请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及已有的数据代码和分析文档。我是 2 号同学，负责线性路线。可修改 experiments/linear/ 和 docs/analysis/linear.md。
+本次任务要求：【由我填写】
+希望你怎样协助：【由我填写】
+完成标准：【由我填写】
 ```
 
 ### 3 号树模型路线
 
 ```text
-先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求和我认领的 GitHub Issue。我是 3 号同学，负责 experiments/tree/ 与 docs/analysis/tree.md。请在公共框架上实现一种树或集成回归算法，说明原理与关键参数，比较默认方案和优化方案。使用统一验证划分和 MAE、RMSE、R²，生成真实值与预测值对比图并解释结果。不要读取 test.csv。完成后运行相关检查，在 Issue 中记录命令、指标与提交号。
+请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及已有的数据代码和分析文档。我是 3 号同学，负责树模型路线。可修改 experiments/tree/ 和 docs/analysis/tree.md。
+本次任务要求：【由我填写】
+希望你怎样协助：【由我填写】
+完成标准：【由我填写】
 ```
 
 ### 4 号拓展路线
 
 ```text
-先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及 2、3 号同学已完成的模型文件和我认领的 GitHub Issue。我是 4 号同学，负责 experiments/robustness/ 与 docs/analysis/robustness.md。请复用两位同学选定的模型：样本量实验只改变训练子集，噪声实验只扰动验证输入的副本。记录设置、随机种子、MAE、RMSE、R² 及趋势图，并解释泛化或鲁棒性的差异。实验只用 raw.csv，不读取或改动 test.csv。完成后运行相关检查，在 Issue 中记录命令、结果与提交号。
+请先阅读 README.md、GLOSSARY.md、docs/architecture.md、作业要求，以及 2、3 号同学已完成的模型文件与分析文档。我是 4 号同学，负责拓展路线。可修改 experiments/robustness/ 和 docs/analysis/robustness.md。
+本次任务要求：【由我填写】
+希望你怎样协助：【由我填写】
+完成标准：【由我填写】
 ```
