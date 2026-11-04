@@ -19,13 +19,14 @@ Specs and implementation tasks for this repository live in GitHub Issues at
   is ready when every blocking issue is closed.
 
 Verify the target with `gh repo view --json nameWithOwner` before creating
-issues. Keep each task independently reviewable. Collaborators claim an issue,
-work on a branch, and submit a pull request linked to the issue.
+issues. Keep each task independently verifiable. Collaborators claim an issue,
+commit directly to `main`, and record the verification command and result in
+the issue. No pull request is required for collaborator work.
 
 ## Pull requests as a triage surface
 
-PRs as a request surface: no. Review collaborator PRs through the normal PR
-workflow; do not treat them as incoming feature requests for `/triage`.
+PRs as a request surface: no. This team normally commits directly to `main`.
+Do not treat a PR as an incoming feature request for `/triage`.
 
 ## Skill operations
 
