@@ -1,0 +1,6 @@
+# Final random-forest Pipeline (tested with Python 3.13.17).
+numpy==2.5.4
+scipy==1.18.1
+scikit-learn==1.9.1
+matplotlib==3.11.2
+threadpoolctl==3.8.0

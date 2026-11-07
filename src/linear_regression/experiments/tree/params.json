@@ -1,0 +1,49 @@
+{
+  "model": "RandomForestRegressor",
+  "parameters": {
+    "random_state": 42,
+    "n_jobs": 1,
+    "max_depth": null,
+    "max_features": 1.0,
+    "n_estimators": 200,
+    "min_samples_leaf": 1
+  },
+  "data": {
+    "source_sha256": "377fad93fefe79483d45f194c57d886f19a9d28ae383a2a838e413a63fdaa253",
+    "source_sha256_lf": "1e17e59dfefcd461068fdf755000aa7736c536a5116a1efdd1d12f60af76b9af",
+    "train_ids_sha256": "c7ff759ffc4b9c17bd4e38098192684559d502fd15392bceb916f0ba668ff850",
+    "split_seed": 42,
+    "validation_fraction": 0.2
+  },
+  "recorded_results": {
+    "training_rows": 19200,
+    "validation_rows": 4800,
+    "validation": {
+      "mae": 0.002762359614583324,
+      "rmse": 0.0035018593291031054,
+      "r2": 0.9610935756430667
+    },
+    "training": {
+      "mae": 0.001025066916666669,
+      "rmse": 0.001305273920573942,
+      "r2": 0.9946279180202328
+    },
+    "cross_validation": {
+      "seed": 2026,
+      "folds": 3,
+      "metrics": {
+        "mae": 0.0028473500104166634,
+        "rmse": 0.0036091196565666644,
+        "r2": 0.9589283763756269
+      },
+      "fold_rmse": [
+        0.003587534364544515,
+        0.0035923612240102826,
+        0.003647159457123743
+      ],
+      "mean_fold_rmse": 0.003609018348559513,
+      "std_fold_rmse": 2.7041730281878776e-05
+    },
+    "prediction_csv_sha256": "a412bc4e7198f2f49a566254abb34f7fc58af89ec2559cb82120596350a4aef9"
+  }
+}
