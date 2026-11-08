@@ -28,7 +28,7 @@
 
 IQR 指 Q3−Q1，检查区间为 [Q1−1.5×IQR, Q3+1.5×IQR]。这里的 IQR 检查针对输入特征，不是目标值；统计规则不能认定物理错误。即使后续出现标记，也应结合来源调查，不能仅凭目标值极端就删除样本。全开发集描述统计用于报告；当前没有根据这些统计量拟合变换、选特征或删样本。
 
-脚本输出 `outputs/data/audit.json`、各特征的 `feature_statistics.csv`、目标分布图 `target_distribution.svg` 以及原始行号划分清单 `split.csv`。标准差采用总体标准差（ddof=0）。这些生成文件位于被忽略的 outputs 目录，可重现生成。
+脚本输出 `outputs/data/audit.json`、各特征的 `feature_statistics.csv`、目标分布图 `target_distribution.svg` 以及原始行号划分清单 `split.csv`。标准差采用总体标准差（ddof=0）。这些生成文件统一位于 `outputs/`，可重现生成。
 
 ## 处理方案与防止泄漏
 

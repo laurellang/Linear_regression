@@ -4,3 +4,5 @@ __pycache__/
 .ruff_cache/
 .venv/
 !outputs/README.md
+outputs/robustness/sample_size/
+outputs/robustness/input_noise/

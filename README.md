@@ -5,10 +5,10 @@
 | 0 号（仓库维护） | `README.md`、`AGENTS.md`、`docs/architecture.md`、`pyproject.toml`、`src/linear_regression/experiment.py`、`src/linear_regression/reporting.py`、`src/tests/` 中对应测试、`src/linear_regression/experiments/final/` | 维护目录与接口约定、共享评估和结果工具、依赖与运行说明，最后整合比较图、最终测试和报告 | [0 号提示词](#0-号仓库维护) |
 | 1 号（数据统计与预处理） | `src/linear_regression/data.py`、`src/linear_regression/experiments/data/`、`src/tests/` 中对应测试、`docs/analysis/data.md` | 数据概况与统计、缺失和异常检查、列解析、必要预处理与固定训练/验证划分；说明数据处理的理由 | [1 号提示词](#1-号数据统计与预处理) |
 | 2 号（线性路线） | `src/linear_regression/experiments/linear/`、`docs/analysis/linear.md` | 一种线性或正则化回归算法，默认与优化方案、验证结果、预测图和分析 | [2 号提示词](#2-号线性路线) |
-| 3 号（树模型路线） | `src/linear_regression/experiments/tree/`、`docs/analysis/tree.md` | 一种树或集成回归算法，默认与优化方案、验证结果、预测图和分析 | [3 号提示词](#3-号树模型路线) |
-| 4 号（拓展路线） | `src/linear_regression/experiments/robustness/`、`docs/analysis/robustness.md` | 训练样本量和输入噪声实验，比较两种已完成模型的泛化与鲁棒性 | [4 号提示词](#4-号拓展路线) |
+| 3 号（树模型路线） | `src/linear_regression/experiments/tree/`、`docs/analysis/tree.md` | 随机森林模型、验证结果、预测图和分析；不要求优化前后对照 | [3 号提示词](#3-号树模型路线) |
+| 4 号（拓展路线） | `src/linear_regression/experiments/robustness/`、`docs/analysis/robustness.md` | 训练样本量和输入噪声实验，比较线性与树模型的泛化与鲁棒性 | [4 号提示词](#4-号拓展路线) |
 
-0 号和 1 号由同一位同学承担，因此团队仍为四人。所有 Python 源码和测试都位于 `src/`。公共代码如需调整，任何成员都可以直接修改 `main`，但必须保持 [接口约定](docs/architecture.md) 一致，并先在本地运行相关测试。数据读取、校验、固定划分和数据审计命令已实现；共享模型评估、结果输出及各模型实验仍待实现。
+0 号和 4 号由同一位同学承担，因此团队仍为四人。所有 Python 源码和测试都位于 `src/`。公共代码如需调整，任何成员都可以直接修改 `main`，但必须保持 [接口约定](docs/architecture.md) 一致，并先在本地运行相关测试。数据读取、两条模型路线和鲁棒性实验入口已实现；0 号的通用训练评价、结果输出和最终测试入口仍待完成。
 
 ## 先读什么
 
@@ -24,7 +24,7 @@
 
 本项目只预测 `k-inf`。输入仅用后 39 列；`PPPF` 也是输出，不能作为输入。`ucimlrepo.fetch_ucirepo(id=1091)` 无法直接导入该数据集，因为 UCI 没提供标准化数据地址；使用仓库内下载的原始文件。
 
-所有模型用 `raw.csv` 的同一训练/验证划分：80%/20%，随机种子 42。预处理参数只从训练部分学习。1 号负责公共的数据检查与划分；各模型特有的标准化等变换由模型负责人放入各自的 Pipeline。模型负责人各自选择并说明调参依据；统一报告 MAE、RMSE、R²。`test.csv` 只在模型和参数确定后由 0 号统一运行最终评估，不参与调参、特征选择或鲁棒性试验。
+所有模型用 `raw.csv` 的同一训练/验证划分：80%/20%，随机种子 42。预处理参数只从训练部分学习。1 号负责公共的数据检查与划分；各模型特有的标准化等变换由模型负责人放入各自的 Pipeline。统一报告 MAE、RMSE、R²；线性路线包含 L2 参数优化，树路线不要求优化前后对照。`test.csv` 只在模型和参数确定后由 0 号统一运行最终评估，不参与调参、特征选择或鲁棒性试验。
 
 ## 已完成的数据工作
 
@@ -45,7 +45,7 @@ python -m unittest discover -s src/tests -v
 python -m linear_regression.experiments.data.run
 ```
 
-审计结果写入 `outputs/data/`，该目录中的生成文件不提交 Git：
+审计结果写入 `outputs/data/`：
 
 | 文件 | 内容 |
 | --- | --- |
@@ -76,12 +76,23 @@ predictions = model.predict(split.X_eval)
 
 ## 交付顺序与协作
 
-1. 1 号已完成数据统计、列解析、校验和固定划分；0 号继续实现共享评估、结果工具与依赖配置。公共接口测试可用简易 `fit/predict` 替身，不把它当成正式回归模型。
-2. 2、3 号在公共代码可用后并行完成各自算法、优化前后对比和文字分析。两条路线应体现不同建模思路。
-3. 4 号在两种模型可复用后开展样本量与输入噪声分析，只使用训练/验证数据。
+1. 1 号已完成数据统计、列解析、校验和固定划分；0 号继续完成共享训练评价、结果工具与依赖配置。公共接口测试可用简易 `fit/predict` 替身，不把它当成正式回归模型。
+2. 2 号完成线性算法与优化前后对比；3 号完成随机森林路线。两条路线体现不同建模思路。
+3. 4 号复用两种模型开展样本量与输入噪声分析，只使用训练/验证数据。运行协议见 [鲁棒性分析](docs/analysis/robustness.md)。
 4. 0 号整合模型性能比较图、精选结果、最终测试和报告。题目提到的报告模板尚未放入仓库。
 
-用 GitHub Issues 认领和记录任务。团队约定直接向 `main` 提交，不使用 PR，也暂不设置推送时自动检查。每次提交前先拉取最新代码，运行相关本地测试或实验，在 Issue 中记录运行命令、结果与提交号。生成的中间文件放在 `outputs/`，最终采用的图放在 `docs/figures/`，实验解释放在 `docs/analysis/`。
+用 GitHub Issues 认领和记录任务。团队约定直接向 `main` 提交，不使用 PR，也暂不设置推送时自动检查。每次提交前先拉取最新代码，运行相关本地测试或实验，在 Issue 中记录运行命令、结果与提交号。实验生成的指标、预测和图统一放在 `outputs/`，实验解释放在 `docs/analysis/`。
+
+## 运行鲁棒性实验
+
+从仓库根目录运行，需安装 NumPy、scikit-learn 和 Matplotlib。该命令会多次训练完整模型，耗时取决于计算机配置。
+
+```powershell
+$env:PYTHONPATH = 'src'
+python -m linear_regression.experiments.robustness.run
+```
+
+输出在 `outputs/robustness/`：`results.csv`、`protocol.json`、两张趋势图，以及各条件的 `metrics.json` 和 `predictions.csv`。只使用 `raw.csv` 的固定训练/验证划分，不读取 `test.csv`。
 
 ## 给 AI 的任务说明
 
@@ -90,7 +101,7 @@ predictions = model.predict(split.X_eval)
 ### 0 号仓库维护
 
 ```text
-请先阅读 README.md、AGENTS.md、docs/architecture.md、docs/agents/issue-tracker.md 和作业要求。我是 0 号同学，负责仓库维护；我也承担 1 号的数据工作，但本次会话按 0 号范围协作。可修改 README.md、AGENTS.md、docs/architecture.md、pyproject.toml、src/linear_regression/experiment.py、src/linear_regression/reporting.py、src/linear_regression/experiments/final/ 和 src/tests/ 中对应的测试。
+请先阅读 README.md、AGENTS.md、docs/architecture.md、docs/agents/issue-tracker.md 和作业要求。我是 0 号同学，负责仓库维护；我也承担 4 号的拓展工作，但本次会话按 0 号范围协作。可修改 README.md、AGENTS.md、docs/architecture.md、pyproject.toml、src/linear_regression/experiment.py、src/linear_regression/reporting.py、src/linear_regression/experiments/final/ 和 src/tests/ 中对应的测试。
 本次任务要求：【由我填写】
 希望你怎样协助：【由我填写】
 完成标准：【由我填写】

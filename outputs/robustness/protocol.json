@@ -1,0 +1,37 @@
+{
+  "target": "k-inf",
+  "stage": "validation",
+  "split_seed": 42,
+  "data_sha256": "377fad93fefe79483d45f194c57d886f19a9d28ae383a2a838e413a63fdaa253",
+  "train_rows": 19200,
+  "validation_rows": 4800,
+  "train_ids_sha256": "c7ff759ffc4b9c17bd4e38098192684559d502fd15392bceb916f0ba668ff850",
+  "evaluation_ids_sha256": "ae5e75060f46ef9e98908967f4b2b270f8eea8cb4808149a0a65998ba6b78cc5",
+  "fractions": [
+    0.1,
+    0.5,
+    1.0
+  ],
+  "subset_seeds": [
+    42,
+    43,
+    44
+  ],
+  "noise_levels": [
+    0.0,
+    0.01,
+    0.05,
+    0.1
+  ],
+  "noise_seeds": [
+    101,
+    102,
+    103
+  ],
+  "noise_definition": "Gaussian noise times training-set per-feature population SD",
+  "noise_applied_to": "validation inputs only; no clipping",
+  "enrichment_range": [
+    0.7,
+    5.0
+  ]
+}
