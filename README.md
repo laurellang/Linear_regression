@@ -30,6 +30,7 @@
 
 - `src/linear_regression/data.py`：按空白解析并严格检查 41 列、数值和有限值；提取 39 个输入及 `k-inf`，排除 `PPPF`；提供固定验证划分和最终评价划分。
 - `src/linear_regression/experiments/data/run.py`：检查开发数据并生成统计、目标分布图和划分清单；不读取独立测试集。
+- `src/linear_regression/experiments/data/column_roles.py`：分析全部 41 列的跨度、均匀性、分布及相关关系，绘制前两列作为候选输出的证据图，保留列顺序待确认的限制。
 - `src/tests/test_data.py`：3 项测试覆盖列解析与错误处理、划分可复现及互斥、最终评价输入重叠检查等行为。
 - `docs/analysis/data.md`：记录实测结果、处理依据和模型组员交接说明。
 
@@ -45,6 +46,13 @@ python -m unittest discover -s src/tests -v
 python -m linear_regression.experiments.data.run
 ```
 
+列角色分析另外需要 Matplotlib，从仓库根目录运行：
+
+```powershell
+$env:PYTHONPATH = 'src'
+python -m linear_regression.experiments.data.column_roles
+```
+
 审计结果写入 `outputs/data/`：
 
 | 文件 | 内容 |
@@ -53,6 +61,9 @@ python -m linear_regression.experiments.data.run
 | `feature_statistics.csv` | 39 个特征的分位数、均值和标准差 |
 | `split.csv` | 训练/验证样本对应的原始行号 |
 | `target_distribution.svg` | 开发集 `k-inf` 分布图 |
+| `column_role_evidence.png` | 全部 41 列的角色证据图，供汇报使用 |
+| `column_role_evidence.csv` | 每列的范围、均匀性距离和相关性统计 |
+| `column_role_summary.json` | 源文件哈希、证据摘要和推断限制 |
 
 可用 `--input dataset_UCI/raw.csv --output outputs/data` 指定输入与输出目录。本次数据交付的 3 项测试及审计命令已通过；模型训练需要的 scikit-learn 等依赖与命令后续补充。
 

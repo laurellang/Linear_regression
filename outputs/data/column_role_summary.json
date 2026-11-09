@@ -1,0 +1,32 @@
+{
+  "input": "D:\\\u540c\u6d4e\u4f5c\u4e1a\\\u5927\u4e09\u4e0a\\\u673a\u5668\u5b66\u4e60\\Linear_regression\\dataset_UCI\\raw.csv",
+  "sha256": "377fad93fefe79483d45f194c57d886f19a9d28ae383a2a838e413a63fdaa253",
+  "metadata_source": "https://archive.ics.uci.edu/dataset/1091/lattice-physics+(pwr+fuel+assembly+neutronics+simulation+results)",
+  "rows": 24000,
+  "columns": 41,
+  "provisional_convention": "columns 1-2 are simulation outputs; columns 3-41 are enrichment inputs",
+  "evidence": {
+    "candidate_output_ranges": [
+      0.13922000000000012,
+      0.9455178819999999
+    ],
+    "median_input_range": 4.299754201,
+    "candidate_output_ks_distances": [
+      0.842839534883721,
+      0.643979015116279
+    ],
+    "median_input_ks_distance": 0.005833105736434252,
+    "candidate_output_correlations_with_feature_mean": [
+      0.9576223740423764,
+      -0.7353441761180517
+    ],
+    "all_inputs_in_documented_range": true
+  },
+  "statistics": {
+    "ks": "Two-sided empirical CDF distance from Uniform(0.7, 5.0); descriptive only, no hypothesis test",
+    "correlation": "Columns 1-2 versus mean of columns 3-41; each input versus mean of the OTHER 38 inputs",
+    "std": "population standard deviation (ddof=0)",
+    "constant_column_correlation": "Reported as 0, not evidence of independence"
+  },
+  "interpretation": "The statistics support, but cannot prove, columns 1-2 as outputs. They cannot establish which is k-inf or PPPF without official column-order metadata."
+}
